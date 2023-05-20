@@ -4,14 +4,14 @@ from torchvision import transforms
 from torchvision.utils import save_image
 from torch.utils.data import DataLoader, random_split
 from torch.cuda import amp
-from model import Generator, Discriminator
+from models import Generator, Discriminator
 from dataset import PirateDataset
 from tqdm import tqdm
 
 BATCH_SIZE = 8
-NUM_EPOCHS = 100
-GEN_LR = 5e-4
-DISC_LR = 5e-4
+NUM_EPOCHS = 50
+GEN_LR = 1e-3
+DISC_LR = 1e-3
 LATENT_DIM = 2048
 
 
