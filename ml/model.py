@@ -25,7 +25,7 @@ class Generator(nn.Module):
         self.convolutional_layers = nn.Sequential(
             nn.Conv2d(32, 3, kernel_size=9),  # (batch_size, 3, 25, 256)
             nn.Dropout2d(),
-            nn.LeakyReLU(),
+            nn.Sigmoid(),
         )
 
     def forward(self: Self, x: T.Tensor) -> T.Tensor:
