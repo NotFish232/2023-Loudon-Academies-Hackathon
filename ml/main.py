@@ -28,7 +28,7 @@ def main() -> None:
     )
     train_set, test_set = random_split(dataset, [1, 0])
     train_loader = DataLoader(train_set, BATCH_SIZE, drop_last=True)
-    test_loader = DataLoader(test_set, len(test_set))
+    #test_loader = DataLoader(test_set, len(test_set))
 
     generator = Generator().to(device)
     discriminator = Discriminator().to(device)
@@ -43,6 +43,8 @@ def main() -> None:
 
     ones = T.ones((BATCH_SIZE, 1), device=device)
     zeros = T.zeros((BATCH_SIZE, 1), device=device)
+
+    validation_z = T.randn((5, LATENT_DIM), device=device)
 
     for epoch in range(1, NUM_EPOCHS + 1):
         for imgs in tqdm(train_loader, desc=f"Epoch {epoch}"):
@@ -66,6 +68,12 @@ def main() -> None:
             disc_scaler.scale(disc_loss).backward()
             disc_scaler.step(disc_optim)
             disc_scaler.update()
+       
+        with T.no_grad():
+            imgs = 255 * generator(validation_z)
+
+        for i, img in enumerate(imgs):
+            save_image(img, f"img{epoch}-{i}.png")
 
     T.save(
         {
@@ -74,14 +82,6 @@ def main() -> None:
         },
         "trained_model.pt",
     )
-    generator.eval()
-    discriminator.eval()
-    z = T.randn((5, LATENT_DIM), device=device)
-    with T.no_grad():
-        imgs = 255 * generator(z)
-
-    for i, img in enumerate(imgs):
-        save_image(img, f"img{i}.png")
 
 
 if __name__ == "__main__":
