@@ -17,7 +17,10 @@ LATENT_DIM = 1024
 def main() -> None:
     device = T.device("cuda" if T.cuda.is_available() else "cpu")
 
-    dataset = PirateDataset(transforms=transforms.ToTensor())
+    dataset = PirateDataset(transforms=transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Lambda(lambda x: x.to(device, dtype=T.float32))
+        ]))
     train_set, test_set = random_split(dataset, [0.9, 0.1])
     train_loader = DataLoader(train_set, BATCH_SIZE, drop_last=True)
     test_loader = DataLoader(test_set, len(test_set))
