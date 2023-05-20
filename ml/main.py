@@ -68,21 +68,20 @@ def main() -> None:
             disc_scaler.update()
 
     T.save(
-        "trained_model.pt",
         {
             "generator": generator.state_dict(),
             "discriminator": discriminator.state_dict(),
         },
+        "trained_model.pt",
     )
     generator.eval()
     discriminator.eval()
     z = T.randn((5, 1024))
     with T.no_grad():
         imgs = generator(z)
-        
+
     for i, img in enumerate(imgs):
         save_image(img, f"img{i}.png")
-
 
 
 if __name__ == "__main__":
