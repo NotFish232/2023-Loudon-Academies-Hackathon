@@ -4,7 +4,7 @@ from pprint import pprint
 import requests
 
 # Add your Bing Search V7 subscription key and endpoint to your environment variables.
-subscription_key = "0b07354f7148495aa33ec87b5a7ba195"
+subscription_key = "<subscription_key>"
 endpoint = "https://api.bing.microsoft.com/bing/v7.0/search"
 
 # Query term(s) to search for.
