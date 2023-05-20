@@ -13,7 +13,6 @@ class PirateDataset(Dataset):
     ) -> None:
         self.img_dir = img_dir
         self.imgs = [img for img in os.listdir(img_dir) if img.endswith(".png")]
-        self.imgs = sorted(self.imgs, key=lambda x: int(x.split(".")[0]))
         self.transforms = transforms
 
     def __len__(self: Self) -> int:
