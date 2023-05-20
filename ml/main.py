@@ -44,9 +44,9 @@ def main() -> None:
     ones = T.ones((BATCH_SIZE, 1), device=device)
     zeros = T.zeros((BATCH_SIZE, 1), device=device)
 
-    validation_z = T.randn((5, LATENT_DIM), device=device)
-
     for epoch in range(1, NUM_EPOCHS + 1):
+        acc_gen_loss = 0
+        acc_disc_loss = 0
         for imgs in tqdm(train_loader, desc=f"Epoch {epoch}"):
             z = T.randn((BATCH_SIZE, LATENT_DIM), device=device)
             # train generator
@@ -68,12 +68,12 @@ def main() -> None:
             disc_scaler.scale(disc_loss).backward()
             disc_scaler.step(disc_optim)
             disc_scaler.update()
-       
-        with T.no_grad():
-            imgs = 255 * generator(validation_z)
 
-        for i, img in enumerate(imgs):
-            save_image(img, f"img{epoch}-{i}.png")
+            acc_gen_loss += gen_loss.detach()
+            acc_disc_loss += disc_loss.detach()
+        print(f"Generator loss {acc_gen_loss.item():.2f}")
+        print(f"Discriminator loss {acc_disc_loss.item():.2f}")
+        
 
     T.save(
         {
@@ -82,6 +82,12 @@ def main() -> None:
         },
         "trained_model.pt",
     )
+
+    validation_z = T.randn((5, LATENT_DIM), device=device)
+    with T.no_grad():
+        imgs = 255 * generator(validation_z)
+        for i, img in enumerate(imgs):
+            save_image(img, f"img{epoch}-{i}.png")
 
 
 if __name__ == "__main__":
