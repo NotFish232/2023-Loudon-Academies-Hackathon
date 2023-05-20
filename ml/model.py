@@ -7,9 +7,9 @@ from typing_extensions import Self
 class Generator(nn.Module):
     def __init__(self: Self) -> None:
         super().__init__()
-        # (batch_size, 1024)
+        # (batch_size, 2048)
         self.fully_connected_layers = nn.Sequential(
-            nn.Linear(1024, 15 * 15 * 256),  # (batch_size, 15 * 15 * 256)
+            nn.Linear(2048, 15 * 15 * 256),  # (batch_size, 15 * 15 * 256)
             nn.Dropout(),
             nn.LeakyReLU(),
         )
@@ -87,7 +87,7 @@ def main() -> None:
     print(f"Generator: {sum(i.numel() for i in gen.parameters())}")
     print(f"Discriminator: {sum(i.numel() for i in disc.parameters())}")
     with T.no_grad():
-        y = gen(T.randn((1, 1024)))
+        y = gen(T.randn((1, 2048)))
         y_hat = disc(y)
     print(y.shape)
     print(y_hat.shape)

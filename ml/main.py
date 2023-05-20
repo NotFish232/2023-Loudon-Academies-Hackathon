@@ -10,9 +10,9 @@ from tqdm import tqdm
 
 BATCH_SIZE = 32
 NUM_EPOCHS = 50
-GEN_LR = 1e-3
-DISC_LR = 1e-3
-LATENT_DIM = 1024
+GEN_LR = 1e-2
+DISC_LR = 1e-2
+LATENT_DIM = 2048
 
 
 def main() -> None:
@@ -76,7 +76,7 @@ def main() -> None:
     )
     generator.eval()
     discriminator.eval()
-    z = T.randn((5, 1024), device=device)
+    z = T.randn((5, LATENT_DIM), device=device)
     with T.no_grad():
         imgs = generator(z)
 
