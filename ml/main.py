@@ -26,7 +26,7 @@ def main() -> None:
             ]
         )
     )
-    train_set, test_set = random_split(dataset, [0.9, 0.1])
+    train_set, test_set = random_split(dataset, [1, 0])
     train_loader = DataLoader(train_set, BATCH_SIZE, drop_last=True)
     test_loader = DataLoader(test_set, len(test_set))
 
