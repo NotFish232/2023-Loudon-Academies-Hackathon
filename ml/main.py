@@ -8,10 +8,10 @@ from model import Generator, Discriminator
 from dataset import PirateDataset
 from tqdm import tqdm
 
-BATCH_SIZE = 32
-NUM_EPOCHS = 50
-GEN_LR = 1e-2
-DISC_LR = 1e-2
+BATCH_SIZE = 8
+NUM_EPOCHS = 100
+GEN_LR = 5e-4
+DISC_LR = 5e-4
 LATENT_DIM = 2048
 
 
