@@ -20,7 +20,7 @@ class PirateDataset(Dataset):
 
     def __getitem__(self: Self, idx: int) -> T.Tensor:
         img_path = f"{self.img_dir}/{self.imgs[idx]}"
-        img = Image.open(img_path)
+        img = Image.open(img_path).convert("RGB")
 
         if self.transforms is not None:
             img = self.transforms(img)
