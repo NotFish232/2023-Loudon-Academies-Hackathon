@@ -78,7 +78,7 @@ def main() -> None:
     discriminator.eval()
     z = T.randn((5, LATENT_DIM), device=device)
     with T.no_grad():
-        imgs = generator(z)
+        imgs = 255 * generator(z)
 
     for i, img in enumerate(imgs):
         save_image(img, f"img{i}.png")
