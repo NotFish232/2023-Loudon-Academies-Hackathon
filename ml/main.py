@@ -76,7 +76,7 @@ def main() -> None:
     )
     generator.eval()
     discriminator.eval()
-    z = T.randn((5, 1024))
+    z = T.randn((5, 1024), device=device)
     with T.no_grad():
         imgs = generator(z)
 
