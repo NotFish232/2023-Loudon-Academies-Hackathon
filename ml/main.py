@@ -1,6 +1,7 @@
 import torch as T
 from torch import optim, nn
 from torchvision import transforms
+from torchvision.utils import save_image
 from torch.utils.data import DataLoader, random_split
 from torch.cuda import amp
 from model import Generator, Discriminator
@@ -8,7 +9,7 @@ from dataset import PirateDataset
 from tqdm import tqdm
 
 BATCH_SIZE = 32
-NUM_EPOCHS = 50
+NUM_EPOCHS = 10
 GEN_LR = 1e-3
 DISC_LR = 1e-3
 LATENT_DIM = 1024
@@ -17,10 +18,14 @@ LATENT_DIM = 1024
 def main() -> None:
     device = T.device("cuda" if T.cuda.is_available() else "cpu")
 
-    dataset = PirateDataset(transforms=transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Lambda(lambda x: x.to(device, dtype=T.float32))
-        ]))
+    dataset = PirateDataset(
+        transforms=transforms.Compose(
+            [
+                transforms.ToTensor(),
+                transforms.Lambda(lambda x: x.to(device, dtype=T.float32)),
+            ]
+        )
+    )
     train_set, test_set = random_split(dataset, [0.9, 0.1])
     train_loader = DataLoader(train_set, BATCH_SIZE, drop_last=True)
     test_loader = DataLoader(test_set, len(test_set))
@@ -69,6 +74,15 @@ def main() -> None:
             "discriminator": discriminator.state_dict(),
         },
     )
+    generator.eval()
+    discriminator.eval()
+    z = T.randn((5, 1024))
+    with T.no_grad():
+        imgs = generator(z)
+        
+    for i, img in enumerate(imgs):
+        save_image(img, f"img{i}.png")
+
 
 
 if __name__ == "__main__":
